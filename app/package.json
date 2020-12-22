@@ -1,0 +1,22 @@
+{
+  "name": "outterspace",
+  "version": "1.0.0",
+  "description": "This is app for PD",
+  "main": "index.js",
+  "scripts": {
+    "test": "tes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "MeteorMap"
+  },
+  "author": "Nemnonov A., Nemnonova T., Kostuk T., Ivanchikhin A., Voloskov A.",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "mongoose": "^5.11.8",
+    "nodemon": "^2.0.6"
+  }
+}
