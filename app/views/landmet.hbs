@@ -1,0 +1,79 @@
+        <section class="map-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2>Фильтры</h2>
+                        <h3>Recclass</h3>
+                        <div class="dropdown">
+                            <div class="select">
+                                <span>Выбрать</span>
+                                <i class="fa fa-chevron-left"></i>
+                            </div>
+                            <input type="hidden" name="gender">
+                            <ul class="dropdown-menu">
+                                <li id="1">H1</li>
+                                <li id="2">L1</li>
+                                <li id="3">D1</li>
+                            </ul>
+                        </div>  
+                        <!-- <span class="msg"></span> -->
+                    </div>
+                    <div class="col-md-10">
+                        <!-- карта -->
+                        <img src=./images/block2222.jpg alt="  ">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- стандартная таблица -->
+        <section class="table-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Recclass</th>
+                                    <th scope="col">Fall</th>
+                                </tr>
+                            </thead>
+                          <tbody>
+                              {{#each landmets}}
+                              <tr>
+                              <td>{{name}}</td>
+                              <td>{{recclass}}</td>
+                              <td>{{fall}}</td>
+                              </tr>
+                              {{/each}}
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p>2020 OuterSpace</p>
+                    </div>
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-2">
+                        <p>Made by 181-341</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JQUERY -->
+        <script src="js/vendor/jquery-1.11.2.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/isotope.pkgd.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/wow.min.js"></script>
+        <script src="js/custom.js"></script>    
+    </body>
+</html>
