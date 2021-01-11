@@ -1,9 +1,20 @@
 let url = 'http://api.open-notify.org/iss-now.json';
 
+var facts = Array(
+	'Международная космическая станция — самый дорогой объект, когда-либо построенный человечеством.',
+	'На борту МКС есть тренажёры, чтобы космонавты могли поддерживать свою мускулатуру в тонусе.',
+	'МКС состоит из четырнадцати состыкованных друг с другом модулей.',
+	'Всю необходимую для работы энергию МКС получает от Солнца, собирая её с помощью солнечных панелей.',
+	'Пять модулей МКС построено Россией, семь — США. По одному модулю построили Япония и Евросоюз.',
+	'Вес Международной космической станции — более 417 тонн.',
+	'Внутренний объём МКС — около тысячи кубических метров пространства.',
+	'МКС — третий по яркости объект на ночном небе после Луны и Венеры.'
+);
+
+
 fetch(url)
 .then(res => res.json())
 .then((out) => {
-	console.log('Checkout this JSON! ', out);
 	var ISSIcon = L.icon({
 		iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/International_Space_Station.svg/320px-International_Space_Station.svg.png',
 		iconSize:     [64, 64], // size of the icon
@@ -17,7 +28,7 @@ fetch(url)
 	}).addTo(map);
 
 	L.marker([out.iss_position.latitude, out.iss_position.longitude], {icon: ISSIcon}).addTo(map)
-		.bindPopup('Random ISS fact')
+		.bindPopup(facts[Math.floor(Math.random() * facts.length)])
 		.openPopup();
 })
 .catch(err => { throw err });
