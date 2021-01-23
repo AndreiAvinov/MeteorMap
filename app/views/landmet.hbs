@@ -3,37 +3,9 @@
                 <div class="row">
                     <div class="col-md-2">
                         <h2>Фильтры</h2>
-                        <h3>Recclass</h3>
-						<form action="/filter" method="POST">
-							<fieldset>
-								<h3>Recclass</h3>
-								<div class="dropdown">
-									<div class="select">
-										<span>Выбрать</span>
-										<i class="fa fa-chevron-left"></i>
-									</div>
-									<input type="hidden" name="gender">
-									<ul class="dropdown-menu">
-										<li id="1">H1</li>
-										<li id="2">L1</li>
-										<li id="3">D1</li>
-									</ul>
-								</div>  
-								<button type ="reset">Reset</button>
-								<button type ="submit">Submit</button>
-							</fieldset>
-							<div>
-								<h3>Год</h3>
-								<b>900</b> 
-								<div data-role="rangeslider" data-mini="true">
-								  <label for="range-4a"></label>
-								  <input name="range-4a" id="range-4a" min="0" max="100" value="900" type="range" />
-								  <label for="range-4b"></label>
-								  <input name="range-4b" id="range-4b" min="0" max="100" value="2021" type="range" />
-								</div> 
-								<b>2021</b>
-							</div>
-						</form>
+							<h3>Класс метеорита</h3>
+							<input class="form-control" id="recclass2" placeholder="Введите класс">
+							<button id="filter-button">Применить</button>
                         <!-- <span class="msg"></span> -->
                     </div>
                     <div class="col-md-10">
@@ -46,31 +18,7 @@
         <!-- стандартная таблица -->
         <section class="table-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Имя</th>
-                                    <th scope="col">Класс</th>
-									<th scope="col">Масса (грамм)</th>
-									<th scope="col">Год</th>
-                                </tr>
-                            </thead>
-                          <tbody>
-                              {{#each landmets}}
-                              <tr>
-                              <td>{{name}}</td>
-                              <td>{{recclass}}</td>
-							  <td>{{mass (g)}}</td>
-							  <td>{{year}}</td>
-                              </tr>
-                              {{/each}}
-                          </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+				<div id="table-sortable"></div>
         </section>
 
         <footer class="footer">
@@ -89,12 +37,14 @@
         </footer>
 
         <!-- JQUERY -->
+		
         <script src="js/vendor/jquery-1.11.2.min.js"></script>
+		<script src="https://table-sortable.now.sh/table-sortable.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
-		<script src="js/vendor/jquery.mobile-1.4.5.min.js"></script>
         <script src="js/isotope.pkgd.min.js"></script>
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/wow.min.js"></script>
         <script src="js/custom.js"></script>    
+		<script src="js/table.pagination.js"></script>
     </body>
 </html>
