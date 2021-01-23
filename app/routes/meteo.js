@@ -9,12 +9,7 @@ router.get('/', (req,res) => {
 })
 
 router.get('/landmet', async (req,res) => {
-	// use .skip(num) to skip num documents
-    const landmets = await landmet.find({}).limit(50).lean()
-    // console.log(landmets[0])
-    res.render('landmet', {
-        landmets
-    })
+    res.render('landmet')
 })
 
 //returns query results
@@ -30,7 +25,7 @@ router.get('/service/query', async (req,res) => {
     res.jsonp(landmets)
 })
 
-//returns query result count
+//returns query results count
 router.get('/service/query_len',  async (req,res) => {
 	const queryObject = url.parse(req.url,true).query;
     const len = await landmet.find({recclass: queryObject.recclass}).count()
