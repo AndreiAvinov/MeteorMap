@@ -1,18 +1,38 @@
 const {Router} = require('express')
 const landmet = require('../models/landmets')
 const router = Router()
+const http = require('http');
+const url = require('url');
 
 router.get('/', (req,res) => {
     res.render('index')
 })
 
 router.get('/landmet', async (req,res) => {
-    const landmets = await landmet.find({recclass: 'H', name: 'Abo'}).lean()
-    console.log(landmets)
-    res.render('landmet', {
-        landmets
-    })
+    res.render('landmet')
 })
+
+//returns query results
+router.get('/service/query', async (req,res) => {
+	const queryObject = url.parse(req.url,true).query;
+	if (queryObject.len){
+		const len = await landmet.find({recclass: queryObject.recclass}).count()
+		res.jsonp({len : len})
+	}
+	console.log(queryObject.recclass)
+    const landmets = await landmet.find(queryObject).lean()
+    console.log(landmets[0])
+    res.jsonp(landmets)
+})
+
+//returns query results count
+router.get('/service/query_len',  async (req,res) => {
+	const queryObject = url.parse(req.url,true).query;
+    const len = await landmet.find({recclass: queryObject.recclass}).count()
+    console.log(len)
+    res.jsonp({len : len})
+})
+
 
 router.get('/NEO', async (req,res) => {
   res.render('NEO')
