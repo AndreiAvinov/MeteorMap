@@ -34,12 +34,12 @@ router.get('/service/query', async (req,res) => {
 	if (!queryObject.fromMass){delete queryObject.fromMass;}
 	else{
 		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
-		queryFilter.mass['$gte'] = parseInt(queryObject.fromMass)
+		queryFilter.mass['$gte'] = parseFloat(queryObject.fromMass)
 	}
 	if (!queryObject.toMass){delete queryObject.toMass;}
 	else{
 		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
-		queryFilter.mass['$lte'] = parseInt(queryObject.toMass)
+		queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
 	}
 	console.log(queryFilter)
 	if (queryObject.len){
