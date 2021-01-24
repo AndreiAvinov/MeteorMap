@@ -25,6 +25,11 @@ var map;
 var layerGroup;
 var meteorIcon;
 var meteorArr = [];
+map = new L.map('map').setView([55.752577, 37.616684], 5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 var url = new URL(window.location.origin + "/service/query");
 $.get(url, function(data) {
@@ -35,11 +40,6 @@ $.get(url, function(data) {
 		iconSize:     [32, 32], // size of the icon
 		iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
 	});
-	map = new L.map('map').setView([55.752577, 37.616684], 5);
-
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	}).addTo(map);
 
 	layerGroup = L.layerGroup().addTo(map);
 	for (let i = 0; i < Math.min(data.length, 3000); i++){
@@ -50,6 +50,7 @@ $.get(url, function(data) {
 
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
+			window.scrollTo(0, 0);
 			var rowNum = parseInt(item.getAttribute('id')) + (20 * parseInt(document.getElementsByClassName("btn btn-primary active")[0].getAttribute("data-page")))
 			map.setView([data[rowNum].reclat, data[rowNum].reclong], 8);
 		})
@@ -96,6 +97,7 @@ const callback = function(mutationsList, observer) {
     // Use traditional 'for loops' for IE 11
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
+			window.scrollTo(0, 0);
 			var rowNumOnPage = parseInt(item.getAttribute('id'))
 			console.log(table.getCurrentPageData()[rowNumOnPage])
 			map.setView([table.getCurrentPageData()[rowNumOnPage].reclat, table.getCurrentPageData()[rowNumOnPage].reclong], 8);
