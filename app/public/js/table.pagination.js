@@ -50,9 +50,24 @@ $.get(url, function(data) {
 
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
-			window.scrollTo(0, 0);
-			var rowNum = parseInt(item.getAttribute('id')) + (20 * parseInt(document.getElementsByClassName("btn btn-primary active")[0].getAttribute("data-page")))
-			map.setView([data[rowNum].reclat, data[rowNum].reclong], 8);
+			if (!data[rowNum].reclat){
+				var modal = document.getElementById("myModal");
+				var span = document.getElementsByClassName("close")[0];
+				modal.style.display = "block";
+				span.onclick = function() {
+				  modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+				  if (event.target == modal) {
+					modal.style.display = "none";
+				  }
+				}
+			}else{
+				window.scrollTo(0, 0);
+				var rowNum = parseInt(item.getAttribute('id')) + (20 * parseInt(document.getElementsByClassName("btn btn-primary active")[0].getAttribute("data-page")))
+				map.setView([data[rowNum].reclat, data[rowNum].reclong], 8);
+			}
 		})
 	})
 	
@@ -97,10 +112,25 @@ const callback = function(mutationsList, observer) {
     // Use traditional 'for loops' for IE 11
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
-			window.scrollTo(0, 0);
 			var rowNumOnPage = parseInt(item.getAttribute('id'))
 			console.log(table.getCurrentPageData()[rowNumOnPage])
-			map.setView([table.getCurrentPageData()[rowNumOnPage].reclat, table.getCurrentPageData()[rowNumOnPage].reclong], 8);
+			if (!table.getCurrentPageData()[rowNumOnPage].reclat){
+				var modal = document.getElementById("myModal");
+				var span = document.getElementsByClassName("close")[0];
+				modal.style.display = "block";
+				span.onclick = function() {
+				  modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+				  if (event.target == modal) {
+					modal.style.display = "none";
+				  }
+				}
+			}else{
+				window.scrollTo(0, 0);
+				map.setView([table.getCurrentPageData()[rowNumOnPage].reclat, table.getCurrentPageData()[rowNumOnPage].reclong], 8);
+			}
 		})
 	})
 };
@@ -110,3 +140,4 @@ const observer = new MutationObserver(callback);
 
 // Start observing the target node for configured mutations
 observer.observe(targetNode, config);
+
