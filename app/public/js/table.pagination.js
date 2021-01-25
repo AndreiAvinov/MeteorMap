@@ -5,7 +5,6 @@ var columns = {
 	year: 'Год падения',
 };
 
-
 var elemNum = 0;
 var table = $('#table-sortable').tableSortable({
     data: [],
@@ -32,22 +31,24 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 var url = new URL(window.location.origin + "/service/query");
+url.searchParams.append('object', 'meteorite');
 $.get(url, function(data) {
     table.setData(data, columns);
+	document.getElementById("spinner").style.display = "none";
+	document.getElementById("table-sortable").style.display = "block";
 	
 	meteorIcon = L.icon({
 		iconUrl: './images/meteorite.png',
-		iconSize:     [32, 32], // size of the icon
-		iconAnchor:   [16, 16], // point of the icon which will correspond to marker's location
+		iconSize:     [32, 32],
+		iconAnchor:   [16, 16],
 	});
-
 	layerGroup = L.layerGroup().addTo(map);
 	for (let i = 0; i < Math.min(data.length, 3000); i++){
 		L.marker([data[i].reclat, data[i].reclong], {icon: meteorIcon}).addTo(layerGroup)
 		.bindPopup(data[i].name + '<br />Класс: ' + data[i].recclass + '<br />Год: ' + data[i].year)
 	}
 	
-
+	// всплывающее окно при отсутствии геоданных
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
 			if (!data[rowNum].reclat){
@@ -57,7 +58,6 @@ $.get(url, function(data) {
 				span.onclick = function() {
 				  modal.style.display = "none";
 				}
-				// When the user clicks anywhere outside of the modal, close it
 				window.onclick = function(event) {
 				  if (event.target == modal) {
 					modal.style.display = "none";
@@ -86,9 +86,9 @@ function tableUpdate(){
 	url.searchParams.append('fromMass', fromMass);
 	var toMass = document.getElementById("toMass").value.toString();
 	url.searchParams.append('toMass', toMass);
+	url.searchParams.append('object', 'meteorite');
 	$.get(url, function(data) {
 		table.setData(data, columns);
-		console.log(typeof data)
 		layerGroup.clearLayers();
 		for (let i = 0; i < Math.min(data.length, 3000); i++){
 			L.marker([data[i].reclat, data[i].reclong], {icon: meteorIcon}).addTo(layerGroup)
@@ -100,20 +100,14 @@ function tableUpdate(){
 document.getElementById("filter-button").onclick = tableUpdate;
 
 
-console.log(document.getElementsByClassName("gs-table-body")[0])
-// Select the node that will be observed for mutations
+
+// всплывающее окно при отсутствии геоданных
 const targetNode = document.getElementsByClassName("gs-table-body")[0];
-
-// Options for the observer (which mutations to observe)
 const config = { attributes: true, childList: true, subtree: true };
-
-// Callback function to execute when mutations are observed
 const callback = function(mutationsList, observer) {
-    // Use traditional 'for loops' for IE 11
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
 			var rowNumOnPage = parseInt(item.getAttribute('id'))
-			console.log(table.getCurrentPageData()[rowNumOnPage])
 			if (!table.getCurrentPageData()[rowNumOnPage].reclat){
 				var modal = document.getElementById("myModal");
 				var span = document.getElementsByClassName("close")[0];
@@ -121,7 +115,6 @@ const callback = function(mutationsList, observer) {
 				span.onclick = function() {
 				  modal.style.display = "none";
 				}
-				// When the user clicks anywhere outside of the modal, close it
 				window.onclick = function(event) {
 				  if (event.target == modal) {
 					modal.style.display = "none";
@@ -134,10 +127,6 @@ const callback = function(mutationsList, observer) {
 		})
 	})
 };
-
-// Create an observer instance linked to the callback function
 const observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
 observer.observe(targetNode, config);
 
