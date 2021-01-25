@@ -1,40 +1,10 @@
      <!-- стандартная таблица -->
         <section class="table-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                          <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Mark</td>
-                              <td>Otto</td>
-                              <td>@mdo</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">2</th>
-                              <td>Jacob</td>
-                              <td>Thornton</td>
-                              <td>@fat</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">3</th>
-                              <td>Larry</td>
-                              <td>the Bird</td>
-                              <td>@twitter</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                    </div>
-                </div>
+				<div class="loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;">
+				  <span>Loading...</span>
+				</div>
+                <div id="table-sortable" style="display: none;"></div>
             </div>
         </section>
 
@@ -61,5 +31,7 @@
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/wow.min.js"></script>
         <script src="js/custom.js"></script>
+		<script src="https://table-sortable.now.sh/table-sortable.js"></script>
+		<script src="js/asteroids.table.js"></script>
     </body>
 </html>

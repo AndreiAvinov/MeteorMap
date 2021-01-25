@@ -1,5 +1,6 @@
 const {Router} = require('express')
 const landmet = require('../models/landmets')
+const asteroid = require('../models/asteroids')
 const router = Router()
 const http = require('http');
 const url = require('url');
@@ -17,48 +18,41 @@ router.get('/service/query', async (req,res) => {
 	const queryObject = url.parse(req.url,true).query;
 	var queryFilter = {}
 	console.log(queryObject)
-	if (!queryObject.recclass){delete queryObject.recclass;}
-	else{
-		queryFilter.recclass = queryObject.recclass
+	if (queryObject.object == 'meteorite'){
+		if (!queryObject.recclass){delete queryObject.recclass;}
+		else{
+			queryFilter.recclass = queryObject.recclass
+		}
+		if (!queryObject.fromYear){delete queryObject.fromYear;}
+		else{
+			if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
+			queryFilter.year['$gte'] = parseInt(queryObject.fromYear)
+		}
+		if (!queryObject.toYear){delete queryObject.toYear;}
+		else{
+			if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
+			queryFilter.year['$lte'] = parseInt(queryObject.toYear)
+		}
+		if (!queryObject.fromMass){delete queryObject.fromMass;}
+		else{
+			if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
+			queryFilter.mass['$gte'] = parseFloat(queryObject.fromMass)
+		}
+		if (!queryObject.toMass){delete queryObject.toMass;}
+		else{
+			if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
+			queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
+		}
+		const landmets = await landmet.find(queryFilter).limit(10000).lean()
+		console.log(landmets[0])
+		res.jsonp(landmets)
+	}else if (queryObject.object == 'asteroid'){
+		const asteroids = await asteroid.find(queryFilter).lean()
+		console.log(asteroids[0])
+		res.jsonp(asteroids)
 	}
-	if (!queryObject.fromYear){delete queryObject.fromYear;}
-	else{
-		if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
-		queryFilter.year['$gte'] = parseInt(queryObject.fromYear)
-	}
-	if (!queryObject.toYear){delete queryObject.toYear;}
-	else{
-		if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
-		queryFilter.year['$lte'] = parseInt(queryObject.toYear)
-	}
-	if (!queryObject.fromMass){delete queryObject.fromMass;}
-	else{
-		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
-		queryFilter.mass['$gte'] = parseFloat(queryObject.fromMass)
-	}
-	if (!queryObject.toMass){delete queryObject.toMass;}
-	else{
-		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
-		queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
-	}
-	console.log(queryFilter)
-	if (queryObject.len){
-		const len = await landmet.find(queryFilter).count()
-		res.jsonp({len : len})
-	}
-	console.log(queryObject)
-    const landmets = await landmet.find(queryFilter).lean()
-    console.log(landmets[0])
-    res.jsonp(landmets)
 })
 
-//returns query results count
-router.get('/service/query_len',  async (req,res) => {
-	const queryObject = url.parse(req.url,true).query;
-    const len = await landmet.find({recclass: queryObject.recclass}).count()
-    console.log(len)
-    res.jsonp({len : len})
-})
 
 
 router.get('/NEO', async (req,res) => {
