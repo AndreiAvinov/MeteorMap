@@ -152,12 +152,6 @@ h6 {
 input {
     margin: 0 0 20px;
 }
-button{
-padding: 5px;
-    width: 100%;
-    background: #f3a50d;
-    border-radius: 4px;
-}
 p {
 font-family: 'Comfortaa', cursive;
 }
