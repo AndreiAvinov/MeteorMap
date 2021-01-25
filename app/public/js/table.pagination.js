@@ -75,6 +75,8 @@ $.get(url, function(data) {
 });
 
 function tableUpdate(){
+	document.getElementById("spinner").style.display = "block";
+	document.getElementById("table-sortable").style.display = "none";
 	var url = new URL(window.location.origin + "/service/query?");
 	var recclass = document.getElementById("recclass").value.toString();
 	url.searchParams.append('recclass', recclass);
@@ -89,6 +91,8 @@ function tableUpdate(){
 	url.searchParams.append('object', 'meteorite');
 	$.get(url, function(data) {
 		table.setData(data, columns);
+		document.getElementById("spinner").style.display = "none";
+		document.getElementById("table-sortable").style.display = "block";
 		layerGroup.clearLayers();
 		for (let i = 0; i < Math.min(data.length, 3000); i++){
 			L.marker([data[i].reclat, data[i].reclong], {icon: meteorIcon}).addTo(layerGroup)
