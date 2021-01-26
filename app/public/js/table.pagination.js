@@ -75,6 +75,7 @@ $.get(url, function(data) {
 });
 
 function tableUpdate(){
+	elemNum = 0;
 	document.getElementById("spinner").style.display = "block";
 	document.getElementById("table-sortable").style.display = "none";
 	var url = new URL(window.location.origin + "/service/query?");
