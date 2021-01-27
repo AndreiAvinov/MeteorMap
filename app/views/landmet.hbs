@@ -4,21 +4,42 @@
                     <div class="col-md-2">
                         <h2>Фильтры</h2>
 							<h3>Класс метеорита</h3>
-							<input class="form-control" id="recclass2" placeholder="Введите класс">
-							<button id="filter-button">Применить</button>
+							<input class="form-control" id="recclass" placeholder="Введите класс">
+							<h3>Год падения</h3>
+							<input class="form-control" id="fromYear" placeholder="Искать с такого года">
+							<input class="form-control" id="toYear" placeholder="Искать до такого года">
+							<h3>Масса</h3>
+							<input class="form-control" id="fromMass" placeholder="Искать с такой массы">
+							<input class="form-control" id="toMass" placeholder="Искать до такой массы">							
+							<button id="filter-button" style="padding: 5px; width: 100%; background: #f3a50d; border-radius: 4px";>Применить</button>
                         <!-- <span class="msg"></span> -->
+                    </div>
+                    <div class="col-md-10" style="margin: 15px auto 15px;">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons" style="background: #f3a50d; border-radius: 4px; float: right;">
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Карта
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" name="options" id="option2" autocomplete="off"> График
+                            </label>
+                        </div>
                     </div>
                     <div class="col-md-10">
                         <!-- карта -->
-                        <img src=./images/block2222.jpg alt="  ">
+                        <div id="map" style="height: 450px; width: 100%;"></div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- стандартная таблица -->
+        <!-- таблица -->
         <section class="table-section">
+			<div class="loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;">
+			  <span>Loading...</span>
+			</div>
             <div class="container">
-				<div id="table-sortable"></div>
+				<div id="table-sortable" style="display: none;"></div>
+
+			</div>
         </section>
 
         <footer class="footer">
@@ -35,7 +56,19 @@
                 </div>
             </div>
         </footer>
+		
+		
 
+		<!-- The Modal -->
+		<div id="myModal" class="modal">
+
+		  <!-- Modal content -->
+		  <div class="modal-content">
+			<span class="close">&times;</span>
+			<h3 style="color:black;text-align:center;">К сожалению место падения <br/>данного метеорита не зафиксировано</h3>
+		  </div>
+
+		</div>
         <!-- JQUERY -->
 		
         <script src="js/vendor/jquery-1.11.2.min.js"></script>

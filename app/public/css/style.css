@@ -149,6 +149,9 @@ h5 {
 h6 {
     font-size: 13px;
 }
+input {
+    margin: 0 0 20px;
+}
 p {
 font-family: 'Comfortaa', cursive;
 }
