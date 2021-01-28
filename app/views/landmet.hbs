@@ -16,29 +16,28 @@
                     </div>
                     <div class="col-md-10" style="margin: 15px auto 15px;">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="background: #f3a50d; border-radius: 4px; float: right;">
-                            <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Карта
+                            <label class="btn btn-secondary active">
+                                <input type="radio" name="options" id="select-map" autocomplete="off" checked> Карта
                             </label>
                             <label class="btn btn-secondary">
-                                <input type="radio" name="options" id="option2" autocomplete="off"> График
+                                <input type="radio" name="options" id="select-chart" autocomplete="off"> График
                             </label>
                         </div>
                     </div>
                     <div class="col-md-10">
                         <!-- карта -->
                         <div id="map" style="height: 450px; width: 100%;"></div>
+						<!-- графики -->
+						<div id="meteo-chart1" style="height: 450px; width: 100%; display: none;"></div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- таблица -->
         <section class="table-section">
-			<div class="loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;">
-			  <span>Loading...</span>
-			</div>
             <div class="container">
+				<div class="custom-loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;"><span>Loading...</span></div>
 				<div id="table-sortable" style="display: none;"></div>
-
 			</div>
         </section>
 
@@ -70,9 +69,9 @@
 
 		</div>
         <!-- JQUERY -->
-		
         <script src="js/vendor/jquery-1.11.2.min.js"></script>
 		<script src="https://table-sortable.now.sh/table-sortable.js"></script>
+		<script src="https://code.jscharting.com/latest/jscharting.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/isotope.pkgd.min.js"></script>
         <script src="js/owl.carousel.min.js"></script>

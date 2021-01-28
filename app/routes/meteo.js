@@ -13,11 +13,10 @@ router.get('/landmet', async (req,res) => {
     res.render('landmet')
 })
 
-//returns query results
+//возвращает результаты запросов
 router.get('/service/query', async (req,res) => {
 	const queryObject = url.parse(req.url,true).query;
 	var queryFilter = {}
-	console.log(queryObject)
 	if (queryObject.object == 'meteorite'){
 		if (!queryObject.recclass){delete queryObject.recclass;}
 		else{
@@ -44,15 +43,61 @@ router.get('/service/query', async (req,res) => {
 			queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
 		}
 		const landmets = await landmet.find(queryFilter).limit(10000).lean()
-		console.log(landmets[0])
 		res.jsonp(landmets)
 	}else if (queryObject.object == 'asteroid'){
 		const asteroids = await asteroid.find(queryFilter).lean()
-		console.log(asteroids[0])
 		res.jsonp(asteroids)
 	}
 })
 
+
+router.get('/service/chart', async (req,res) => {
+	const queryObject = url.parse(req.url,true).query;
+	var queryFilter = {}
+	if (!queryObject.recclass){delete queryObject.recclass;}
+	else{
+		queryFilter.recclass = queryObject.recclass
+	}
+	if (!queryObject.fromYear){delete queryObject.fromYear;}
+	else{
+		if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
+		queryFilter.year['$gte'] = parseInt(queryObject.fromYear)
+	}
+	if (!queryObject.toYear){delete queryObject.toYear;}
+	else{
+		if (typeof queryFilter.year == 'undefined') {queryFilter.year = {};}
+		queryFilter.year['$lte'] = parseInt(queryObject.toYear)
+	}
+	if (!queryObject.fromMass){delete queryObject.fromMass;}
+	else{
+		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
+		queryFilter.mass['$gte'] = parseFloat(queryObject.fromMass)
+	}
+	if (!queryObject.toMass){delete queryObject.toMass;}
+	else{
+		if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
+		queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
+	}
+	const landmets = await landmet.find(queryFilter).lean()
+	var minX = 2021
+	var points = [];
+	var oy = new Array(2021);
+	for (let i = 0; i < landmets.length; i++){
+		if (landmets[i].year){
+			if (!oy[landmets[i].year]){oy[landmets[i].year] = 0;}
+			oy[landmets[i].year] = oy[landmets[i].year] + 1;
+			minX = landmets[i].year < minX ? landmets[i].year : minX;
+		}
+	}
+	var num1 = 0;
+	for (let i = 0; i < oy.length; i++){
+		if (oy[i]){
+			points[num1] = {x : i, y : oy[i]};
+			num1++;
+		}
+	}
+	res.jsonp({points : points, minX : minX})
+})
 
 
 router.get('/NEO', async (req,res) => {

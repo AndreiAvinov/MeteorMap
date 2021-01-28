@@ -1,7 +1,10 @@
+var ACTIVEWINDOW = document.getElementById("map")
+
+
 var columns = {
     name: 'Название',
     recclass: 'Класс',
-    mass: 'Масса',
+    mass: 'Масса (г)',
 	year: 'Год падения',
 };
 
@@ -20,10 +23,21 @@ var table = $('#table-sortable').tableSortable({
     },
 });
 
+var chart = JSC.Chart('meteo-chart1', {
+	type: 'line',
+	xAxis: {
+		scale: {range: { min: 800}}
+	},
+	series: [
+		{}
+	]
+});
+	
+	
+
 var map;
 var layerGroup;
 var meteorIcon;
-var meteorArr = [];
 map = new L.map('map').setView([55.752577, 37.616684], 5);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -36,7 +50,6 @@ $.get(url, function(data) {
     table.setData(data, columns);
 	document.getElementById("spinner").style.display = "none";
 	document.getElementById("table-sortable").style.display = "block";
-	
 	meteorIcon = L.icon({
 		iconUrl: './images/meteorite.png',
 		iconSize:     [32, 32],
@@ -47,11 +60,10 @@ $.get(url, function(data) {
 		L.marker([data[i].reclat, data[i].reclong], {icon: meteorIcon}).addTo(layerGroup)
 		.bindPopup(data[i].name + '<br />Класс: ' + data[i].recclass + '<br />Год: ' + data[i].year)
 	}
-	
-	// всплывающее окно при отсутствии геоданных
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
 			if (!data[rowNum].reclat){
+				// всплывающее окно при отсутствии геоданных
 				var modal = document.getElementById("myModal");
 				var span = document.getElementsByClassName("close")[0];
 				modal.style.display = "block";
@@ -70,9 +82,15 @@ $.get(url, function(data) {
 			}
 		})
 	})
-	
-
 });
+
+
+$.get(window.location.origin + "/service/chart", function(chartData) {
+	chart.series(0).options({ points: chartData.points});
+	chart.axes("x").options({ scale: {range: { min: chartData.minX}}});
+});
+
+
 
 function tableUpdate(){
 	elemNum = 0;
@@ -90,6 +108,7 @@ function tableUpdate(){
 	var toMass = document.getElementById("toMass").value.toString();
 	url.searchParams.append('toMass', toMass);
 	url.searchParams.append('object', 'meteorite');
+	//наносим маркеры на карту
 	$.get(url, function(data) {
 		table.setData(data, columns);
 		document.getElementById("spinner").style.display = "none";
@@ -97,22 +116,48 @@ function tableUpdate(){
 		layerGroup.clearLayers();
 		for (let i = 0; i < Math.min(data.length, 3000); i++){
 			L.marker([data[i].reclat, data[i].reclong], {icon: meteorIcon}).addTo(layerGroup)
-			.bindPopup(data[i].name + '<br />Класс: ' + data[i].recclass + '<br />Год: ' + data[i].year)
+			.bindPopup(data[i].name + '<br />Класс: ' + data[i].recclass + '<br />Год: ' + data[i].year + '<br />Масса: ' + data[i].mass)
 		}
 	});
+	var url = new URL(window.location.origin + "/service/chart?");
+	url.searchParams.append('recclass', recclass);
+	url.searchParams.append('fromYear', fromYear);
+	url.searchParams.append('toYear', toYear);
+	url.searchParams.append('fromMass', fromMass);
+	url.searchParams.append('toMass', toMass); 
+	$.get(url, function(chartData) {
+		chart.series(0).options({ points: chartData.points});
+		chart.axes("x").options({ scale: {range: { min: chartData.minX}}});
+	});
 };	
-
 document.getElementById("filter-button").onclick = tableUpdate;
 
 
 
-// всплывающее окно при отсутствии геоданных
+$('.btn-secondary').on('click', function(){
+	if ($(this).find('input').attr('id') == 'select-map'){setActiveWindow(document.getElementById("map"))}
+	if ($(this).find('input').attr('id') == 'select-chart'){setActiveWindow(document.getElementById("meteo-chart1"))}
+}); 
+
+function setActiveWindow(TBelement){
+	prevACTIVEWINDOW = ACTIVEWINDOW;
+	ACTIVEWINDOW = TBelement;
+	prevACTIVEWINDOW.style.display = "none";
+	TBelement.style.display = "block";
+}
+
+
+
+
+
+
 const targetNode = document.getElementsByClassName("gs-table-body")[0];
 const config = { attributes: true, childList: true, subtree: true };
 const callback = function(mutationsList, observer) {
 	document.getElementsByName("clickable-cell").forEach(item => {
 		item.addEventListener('click', event => {
 			var rowNumOnPage = parseInt(item.getAttribute('id'))
+			// всплывающее окно при отсутствии геоданных
 			if (!table.getCurrentPageData()[rowNumOnPage].reclat){
 				var modal = document.getElementById("myModal");
 				var span = document.getElementsByClassName("close")[0];
@@ -134,4 +179,3 @@ const callback = function(mutationsList, observer) {
 };
 const observer = new MutationObserver(callback);
 observer.observe(targetNode, config);
-
