@@ -27,6 +27,9 @@ var table = $('#table-sortable').tableSortable({
 
 var chart = JSC.Chart('meteo-chart1', {
 	type: 'line',
+	title_label_text: 'Количество наблюдений метеоритов по годам', 
+	xAxis_label_text: "Год",
+	yAxis_label_text: "Количество",
 	xAxis: {
 		scale: {range: { min: 800}}
 	},
@@ -100,9 +103,14 @@ $.get(window.location.origin + "/service/chart", function(chartData) {
 
 
 function tableUpdate(){
+	chartIsLoaded = false;
 	elemNum = 0;
 	document.getElementById("spinner").style.display = "block";
 	document.getElementById("table-sortable").style.display = "none";
+	if ($(ACTIVEWINDOW).attr("id") == "meteo-chart1"){
+		document.getElementById("chart-spinner").style.display = "block";
+		document.getElementById("meteo-chart1").classList.add('custom-hidden');
+	}
 	var url = new URL(window.location.origin + "/service/query?");
 	var recclass = document.getElementById("recclass").value.toString();
 	url.searchParams.append('recclass', recclass);
@@ -135,6 +143,11 @@ function tableUpdate(){
 	$.get(url, function(chartData) {
 		chart.series(0).options({ points: chartData.points});
 		chart.axes("x").options({ scale: {range: { min: chartData.minX}}});
+		chartIsLoaded = true;
+		if ($(ACTIVEWINDOW).attr("id") == "meteo-chart1"){
+			document.getElementById("chart-spinner").style.display = "none";
+			document.getElementById("meteo-chart1").classList.remove('custom-hidden');
+		}
 	});
 };	
 document.getElementById("filter-button").onclick = tableUpdate;

@@ -1,10 +1,31 @@
      <!-- стандартная таблица -->
         <section class="table-section">
             <div class="container">
-				<div class="custom-loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;">
-				  <span>Loading...</span>
-				</div>
-                <div id="table-sortable" style="display: none;"></div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2>Фильтры</h2>
+							<h3>Опасность столкновения</h3>
+							<div class="form-group">
+								<label for="isDangerous"></label>
+								<select class="form-control" id="isDangerous">
+									<option>Не важно</option>
+									<option>Да</option>
+									<option>Нет</option>	
+								</select>
+							</div>
+                            <h3>Диаметр</h3>
+                            <input class="form-control" id="fromDiameter" placeholder="Искать с такого диаметра">
+                            <input class="form-control" id="toDiameter" placeholder="Искать до такого диаметра">                            
+                            <button id="filter-button" style="padding: 5px; width: 100%; background: #f3a50d; border-radius: 4px";>Применить</button>
+                        <!-- <span class="msg"></span> -->
+                    </div>
+                    <div class="col-md-10">
+                        <div class="custom-loader" id="spinner" style="margin-left: auto; margin-right: auto; display: block;">
+                            <span>Loading...</span>
+                        </div>
+                        <div id="table-sortable" style="display: none;"></div>
+                    </div>
+                </div>
             </div>
         </section>
 
