@@ -31,6 +31,9 @@ var table = $('#table-sortable').tableSortable({
 			if (row[key] == 'N'){return 'Нет'}
 			if (row[key] == 'Y'){return 'Да'}
         }
+		if (key == 'diameter') {
+			if (row[key] == 0){return 'Нет данных'}
+        }
         return row[key];
     },
 });
