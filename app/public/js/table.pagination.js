@@ -1,4 +1,6 @@
-var ACTIVEWINDOW = document.getElementById("map")
+var ACTIVEWINDOW = document.getElementById("map");
+
+var chartIsLoaded = false;
 
 
 var columns = {
@@ -88,6 +90,11 @@ $.get(url, function(data) {
 $.get(window.location.origin + "/service/chart", function(chartData) {
 	chart.series(0).options({ points: chartData.points});
 	chart.axes("x").options({ scale: {range: { min: chartData.minX}}});
+	chartIsLoaded = true;
+	if ($(ACTIVEWINDOW).attr("id") == "meteo-chart1"){
+		document.getElementById("chart-spinner").style.display = "none";
+		document.getElementById("meteo-chart1").classList.remove('custom-hidden');
+	}
 });
 
 
@@ -142,8 +149,19 @@ $('.btn-secondary').on('click', function(){
 function setActiveWindow(TBelement){
 	prevACTIVEWINDOW = ACTIVEWINDOW;
 	ACTIVEWINDOW = TBelement;
+	if ($(prevACTIVEWINDOW).attr("id") == "meteo-chart1" && chartIsLoaded){
+		document.getElementById("meteo-chart1").classList.add('custom-hidden');
+	}else{
 	prevACTIVEWINDOW.style.display = "none";
-	TBelement.style.display = "block";
+	}
+	
+	if ($(TBelement).attr("id") == "meteo-chart1" && chartIsLoaded){
+		document.getElementById("meteo-chart1").classList.remove('custom-hidden');
+	}else if ($(TBelement).attr("id") == "meteo-chart1" && !chartIsLoaded){
+		document.getElementById("chart-spinner").style.display = "block";
+	}else {
+		TBelement.style.display = "block";
+	}
 }
 
 
