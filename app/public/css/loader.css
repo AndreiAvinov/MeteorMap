@@ -1,4 +1,4 @@
-.loader {
+.custom-loader {
   font-size: 10px;
   margin: 50px auto;
   text-indent: -9999em;
@@ -18,7 +18,7 @@
   -ms-transform: translateZ(0);
   transform: translateZ(0);
 }
-.loader:before {
+.custom-loader:before {
   width: 50%;
   height: 50%;
   background: #ffffff;
@@ -28,7 +28,7 @@
   left: 0;
   content: '';
 }
-.loader:after {
+.custom-loader:after {
   background: #000010;
   width: 75%;
   height: 75%;
