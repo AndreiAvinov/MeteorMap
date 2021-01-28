@@ -29,7 +29,8 @@ var table = $('#table-sortable').tableSortable({
         }
 		if (key == 'pha') {
 			if (row[key] == 'N'){return 'Нет'}
-			if (row[key] == 'Y'){return 'Да'}
+			else if (row[key] == 'Y'){return 'Да'}
+			else {return 'Нет данных'}
         }
 		if (key == 'diameter') {
 			if (row[key] == 0){return 'Нет данных'}
@@ -38,6 +39,25 @@ var table = $('#table-sortable').tableSortable({
     },
 });
 
+
+function tableUpdate(){
+	document.getElementById("table-sortable").style.display = "none";
+	document.getElementById("spinner").style.display = "block";
+	var url = new URL(window.location.origin + "/service/query");
+	var isDangerous = document.getElementById("isDangerous").value.toString();
+	url.searchParams.append('isDangerous', isDangerous);
+	var fromDiameter = document.getElementById("fromDiameter").value.toString();
+	url.searchParams.append('fromDiameter', fromDiameter);
+	var toDiameter = document.getElementById("toDiameter").value.toString();
+	url.searchParams.append('toDiameter', toDiameter);
+	url.searchParams.append('object', 'asteroid');
+	$.get(url, function(data) {
+		table.setData(data, columns);
+		document.getElementById("spinner").style.display = "none";
+		document.getElementById("table-sortable").style.display = "block";
+	});
+}
+document.getElementById("filter-button").onclick = tableUpdate;
 
 var url = new URL(window.location.origin + "/service/query");
 url.searchParams.append('object', 'asteroid');

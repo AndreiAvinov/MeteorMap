@@ -45,6 +45,20 @@ router.get('/service/query', async (req,res) => {
 		const landmets = await landmet.find(queryFilter).limit(10000).lean()
 		res.jsonp(landmets)
 	}else if (queryObject.object == 'asteroid'){
+		if (!queryObject.isDangerous || queryObject.isDangerous == 'Не важно'){delete queryObject.isDangerous;}
+		else{
+			queryFilter.pha = (queryObject.isDangerous == 'Да') ? 'Y' : 'N';
+		}
+		if (!queryObject.fromDiameter){delete queryObject.fromDiameter;}
+		else{
+			if (typeof queryFilter.diameter == 'undefined') {queryFilter.diameter = {};}
+			queryFilter.diameter['$gte'] = parseFloat(queryObject.fromDiameter)
+		}
+		if (!queryObject.toDiameter){delete queryObject.toDiameter;}
+		else{
+			if (typeof queryFilter.diameter == 'undefined') {queryFilter.diameter = {};}
+			queryFilter.diameter['$lte'] = parseFloat(queryObject.toDiameter)
+		}
 		const asteroids = await asteroid.find(queryFilter).lean()
 		res.jsonp(asteroids)
 	}
