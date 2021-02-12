@@ -42,7 +42,7 @@ router.get('/service/query', async (req,res) => {
 			if (typeof queryFilter.mass == 'undefined') {queryFilter.mass = {};}
 			queryFilter.mass['$lte'] = parseFloat(queryObject.toMass)
 		}
-		const landmets = await landmet.find(queryFilter).limit(10000).lean()
+		const landmets = await landmet.find(queryFilter).limit(5000).lean()
 		res.jsonp(landmets)
 	}else if (queryObject.object == 'asteroid'){
 		if (!queryObject.isDangerous || queryObject.isDangerous == 'Не важно'){delete queryObject.isDangerous;}
@@ -59,7 +59,7 @@ router.get('/service/query', async (req,res) => {
 			if (typeof queryFilter.diameter == 'undefined') {queryFilter.diameter = {};}
 			queryFilter.diameter['$lte'] = parseFloat(queryObject.toDiameter)
 		}
-		const asteroids = await asteroid.find(queryFilter).lean()
+		const asteroids = await asteroid.find(queryFilter).limit(3000).lean()
 		res.jsonp(asteroids)
 	}
 })
